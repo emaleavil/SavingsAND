@@ -6,8 +6,6 @@ plugins {
 
 group = "com.eeema.android.buildlogic"
 
-// Configure the build-logic plugins to target JDK 17
-// This matches the JDK used to build the project, and is not related to what is running on device.
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
@@ -30,4 +28,14 @@ tasks {
 dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.spotless.gradlePlugin)
+}
+
+gradlePlugin {
+    plugins {
+        register("spotless") {
+            id = libs.plugins.custom.spotless.get().pluginId
+            implementationClass = "com.eeema.android.buildlogic.SpotlessConventionPlugin"
+        }
+    }
 }
