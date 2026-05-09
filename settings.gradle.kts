@@ -25,3 +25,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Savings"
 include(":app")
+
+
+apply(file(path = "$rootDir/gradle/scripts/gitPrePush.gradle.kts"))
