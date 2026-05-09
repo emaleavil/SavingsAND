@@ -10,6 +10,9 @@ kotlin = "2.3.21"
 composeBom = "2026.05.00"
 spotless = "8.4.0"
 detekt = "1.23.8"
+appcompat = "1.6.1"
+material = "1.10.0"
+jetbrainsKotlinJvm = "2.3.21"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +35,8 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle-api",
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 spotless-gradlePlugin = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
 detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -43,3 +48,5 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 # Custom plugins of the included build-logic
 custom-spotless = { id = "com.eeema.android.spotless" }
 custom-detekt = { id = "com.eeema.android.detekt" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
