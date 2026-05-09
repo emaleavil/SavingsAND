@@ -6,6 +6,11 @@ plugins {
             .get()
             .pluginId,
     )
+    id(
+        libs.plugins.custom.detekt
+            .get()
+            .pluginId,
+    )
 }
 
 android {

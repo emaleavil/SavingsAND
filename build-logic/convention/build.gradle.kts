@@ -29,6 +29,7 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.spotless.gradlePlugin)
+    compileOnly(libs.detekt.gradlePlugin)
 }
 
 gradlePlugin {
@@ -36,6 +37,10 @@ gradlePlugin {
         register("spotless") {
             id = libs.plugins.custom.spotless.get().pluginId
             implementationClass = "com.eeema.android.buildlogic.SpotlessConventionPlugin"
+        }
+        register("detekt") {
+            id = libs.plugins.custom.detekt.get().pluginId
+            implementationClass = "com.eeema.android.buildlogic.DetektConventionPlugin"
         }
     }
 }
