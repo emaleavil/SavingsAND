@@ -1,18 +1,31 @@
 #!/bin/bash
 
-stagedFiles=$(git diff --staged --name-only)
+currentBranch=$(git branch --show-current)
+readyToPushFiles=$(git diff --name-only origin/$currentBranch...HEAD)
 
-echo "Running spotless check"
-./gradlew spotlessCheck
+echo "Running spotless check for each file"
+allChecksPassed=true
+failedFiles=()
 
-if [ $? -eq 0 ]; then
-    echo "spotless check succeed"
-    for file in $stagedFiles; do
-        if test -f "$file"; then
+for file in $readyToPushFiles; do
+    if test -f "$file"; then
+        ./gradlew spotlessCheck -Pfile=$file > /dev/null 2>&1
+
+        if [ $? -ne 0 ]; then
+            failedFiles+=("$file")
+            allChecksPassed=false
+        else
             git add $file
         fi
+    fi
+done
+
+if [ "$allChecksPassed" = false ]; then
+    echo "❌ Spotless check failed for the following files:" >&2
+    for file in "${failedFiles[@]}"; do
+        echo "  - $file" >&2
     done
-else
-    echo "spotless check failed" >&2
     exit 1
 fi
+
+echo "✅ spotless check succeed for all files"
