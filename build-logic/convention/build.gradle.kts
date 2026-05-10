@@ -42,5 +42,9 @@ gradlePlugin {
             id = libs.plugins.custom.detekt.get().pluginId
             implementationClass = "com.eeema.android.buildlogic.DetektConventionPlugin"
         }
+        register("androidLibrary") {
+            id = libs.plugins.custom.android.library.get().pluginId
+            implementationClass = "com.eeema.android.buildlogic.AndroidLibraryConventionPlugin"
+        }
     }
 }

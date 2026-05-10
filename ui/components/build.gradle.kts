@@ -1,36 +1,15 @@
 plugins {
-    alias(libs.plugins.android.library)
+    id(
+        libs.plugins.custom.android.library
+            .get()
+            .pluginId,
+    )
     alias(libs.plugins.kotlin.compose)
-    id(
-        libs.plugins.custom.spotless
-            .get()
-            .pluginId,
-    )
-    id(
-        libs.plugins.custom.detekt
-            .get()
-            .pluginId,
-    )
 }
 
 android {
     namespace = "com.eeema.android.components"
-    compileSdk {
-        version =
-            release(36) {
-                minorApiLevel = 1
-            }
-    }
 
-    defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
     buildFeatures {
         compose = true
     }
