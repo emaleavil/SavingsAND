@@ -7,12 +7,10 @@ plugins {
 }
 
 android {
-    namespace = "com.eeema.android.components"
+    namespace = "com.eeema.android.theme"
 }
 
 dependencies {
-    implementation(project(":ui:theme"))
-
     // TODO remove these libraries if unnecessary
     testImplementation(libs.junit)
 

@@ -1,4 +1,4 @@
-package com.eeema.android.savings.ui.theme
+package com.eeema.android.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

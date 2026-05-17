@@ -1,6 +1,5 @@
-package com.eeema.android.savings.ui.theme
+package com.eeema.android.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

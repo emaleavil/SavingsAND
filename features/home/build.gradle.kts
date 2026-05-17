@@ -11,6 +11,8 @@ android {
 }
 
 dependencies {
+    api(project(":ui:theme"))
+
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.espresso.core)
