@@ -8,14 +8,14 @@ plugins {
 
 android {
     namespace = "com.eeema.android.login"
-
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
+    api(project(":ui:components"))
     api(project(":ui:theme"))
+
+    implementation(libs.androidx.compose.icons.extended)
+    implementation(libs.androidx.compose.viewmodel) // TODO check if with androidx-lifecycle-viewmodel-navigation3 this dependency is needed
 
     testImplementation(libs.junit)
 
