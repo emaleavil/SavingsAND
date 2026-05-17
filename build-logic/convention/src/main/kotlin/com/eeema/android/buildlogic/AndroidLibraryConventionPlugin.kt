@@ -7,7 +7,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 
-class AndroidLibraryConventionPlugin: Plugin<Project> {
+class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.configure()
     }
@@ -19,23 +19,24 @@ class AndroidLibraryConventionPlugin: Plugin<Project> {
         configureAndroidLibrary()
     }
 
-    private fun Project.configureAndroidLibrary() {
-        extensions.configure<LibraryExtension> {
-            compileSdk {
-                version = release(36) {
-                    minorApiLevel = 1
-                }
-            }
+}
 
-            defaultConfig {
-                minSdk = 24
-                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+internal fun Project.configureAndroidLibrary() {
+    extensions.configure<LibraryExtension> {
+        compileSdk {
+            version = release(36) {
+                minorApiLevel = 1
             }
+        }
 
-            compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_21
-                targetCompatibility = JavaVersion.VERSION_21
-            }
+        defaultConfig {
+            minSdk = 24
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
+
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
         }
     }
 }

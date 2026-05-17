@@ -27,6 +27,7 @@ tasks {
 
 dependencies {
     compileOnly(libs.android.gradlePlugin)
+    compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.spotless.gradlePlugin)
     compileOnly(libs.detekt.gradlePlugin)
@@ -45,6 +46,10 @@ gradlePlugin {
         register("androidLibrary") {
             id = libs.plugins.custom.android.library.get().pluginId
             implementationClass = "com.eeema.android.buildlogic.AndroidLibraryConventionPlugin"
+        }
+        register("androidLibraryCompose") {
+            id = libs.plugins.custom.android.libraryCompose.get().pluginId
+            implementationClass = "com.eeema.android.buildlogic.AndroidLibraryComposeConventionPlugin"
         }
     }
 }
