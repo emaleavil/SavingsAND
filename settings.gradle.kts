@@ -31,10 +31,11 @@ rootProject.name = "Savings"
 include(":app")
 
 // Feature modules
-include(":features:login")
-include(":features:home")
-include(":features:transactions")
 include(":features:add")
+include(":features:home")
+include(":features:login")
+include(":features:login-api")
 include(":features:settings")
+include(":features:transactions")
 include(":ui:components")
 include(":ui:theme")

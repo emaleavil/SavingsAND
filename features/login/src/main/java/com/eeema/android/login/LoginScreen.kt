@@ -39,20 +39,27 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.eeema.android.components.effect.LaunchEffectHandler
+import com.eeema.android.components.navigation.goBack
+import com.eeema.android.components.navigation.navigate
+import com.eeema.android.login.api.SignUp
 import com.eeema.android.theme.SavingsTheme
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun LoginScreen(
     type: LoginType,
-    navigation: () -> Unit,
+    backStack: NavBackStack<NavKey>,
 ) {
     val viewModel = viewModel<LoginViewModel>()
     LoginContent(
         state = viewModel.state.collectAsStateWithLifecycle().value,
         type = type,
         onEvent = viewModel::onEvent,
+        backStack = backStack,
     )
 }
 
@@ -62,6 +69,7 @@ private fun LoginContent(
     state: LoginUiState,
     type: LoginType,
     onEvent: (LoginUiEvent) -> Unit,
+    backStack: NavBackStack<NavKey>,
 ) {
     val email = rememberTextFieldState()
     val password = rememberTextFieldState()
@@ -75,7 +83,7 @@ private fun LoginContent(
                 title = { },
                 navigationIcon = {
                     if (type is LoginType.SignUp) {
-                        IconButton(onClick = { /* TODO (login) handle go back */ }) {
+                        IconButton(onClick = { backStack.goBack() }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Close",
@@ -117,7 +125,7 @@ private fun LoginContent(
                     modifier = Modifier
                         .align(Alignment.End)
                         .alpha(if (type is LoginType.SignIn) 1f else 0f)
-                        .clickable(role = Role.Button) { /* TODO go to sign up screen */ },
+                        .clickable(role = Role.Button) { backStack.navigate(SignUp, false) },
                 )
 
                 Button(
@@ -158,7 +166,7 @@ private fun LoginContent(
         state.effect,
         onEffect = {
             when (it) {
-                is LoginUiEffect.NavigateToHome -> { /* TODO navigate to dashboard */ }
+                is LoginUiEffect.NavigateToHome -> { /*backStack.navigate()*/ }
                 is LoginUiEffect.ShowError -> scope.launch { snackbarHostState.showSnackbar(it.message) }
                 else -> { /*No op*/ }
             }
@@ -177,6 +185,7 @@ private fun Preview(
             state = data.state,
             type = data.type,
             onEvent = {},
+            backStack = rememberNavBackStack(),
         )
     }
 }

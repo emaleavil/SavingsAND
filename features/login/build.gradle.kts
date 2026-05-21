@@ -11,8 +11,8 @@ android {
 }
 
 dependencies {
+    api(project(":features:login-api"))
     api(project(":ui:components"))
-    api(project(":ui:theme"))
 
     implementation(libs.androidx.compose.icons.extended)
     implementation(libs.androidx.compose.viewmodel) // TODO check if with androidx-lifecycle-viewmodel-navigation3 this dependency is needed

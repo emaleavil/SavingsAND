@@ -11,7 +11,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":ui:theme"))
+    api(project(":ui:theme"))
+    api(libs.androidx.navigation3.runtime)
+    api(libs.androidx.navigation3.ui)
 
     // TODO remove these libraries if unnecessary
     testImplementation(libs.junit)
