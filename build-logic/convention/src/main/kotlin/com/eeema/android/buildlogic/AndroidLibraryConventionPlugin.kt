@@ -19,24 +19,23 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         configureAndroidLibrary()
     }
 
-}
-
-internal fun Project.configureAndroidLibrary() {
-    extensions.configure<LibraryExtension> {
-        compileSdk {
-            version = release(36) {
-                minorApiLevel = 1
+    private fun Project.configureAndroidLibrary() {
+        extensions.configure<LibraryExtension> {
+            compileSdk {
+                version = release(36) {
+                    minorApiLevel = 1
+                }
             }
-        }
 
-        defaultConfig {
-            minSdk = 24
-            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        }
+            defaultConfig {
+                minSdk = 24
+                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            }
 
-        compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_21
-            targetCompatibility = JavaVersion.VERSION_21
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_21
+                targetCompatibility = JavaVersion.VERSION_21
+            }
         }
     }
 }

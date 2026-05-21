@@ -18,31 +18,28 @@ class AndroidLibraryComposeConventionPlugin: Plugin<Project> {
     }
 
     private fun Project.configure() {
-        apply(plugin = "com.android.library")
+        apply(plugin = "com.eeema.android.library")
         apply(plugin = "org.jetbrains.kotlin.plugin.compose")
-        configureDetekt()
-        configureSpotless()
-        configureAndroidLibrary()
         configureCompose()
     }
-}
 
-internal fun Project.configureCompose() {
-    extensions.configure<LibraryExtension> {
-        buildFeatures.compose = true
-    }
-    dependencies {
-        val composeBom = libs.findLibrary("androidx-compose-bom").get()
+    private fun Project.configureCompose() {
+        extensions.configure<LibraryExtension> {
+            buildFeatures.compose = true
+        }
+        dependencies {
+            val composeBom = libs.findLibrary("androidx-compose-bom").get()
 
-        implementation(platform(composeBom))
-        implementation(libs.findLibrary("androidx-compose-material3").get())
-        implementation(libs.findLibrary("androidx-compose-ui").get())
-        implementation(libs.findLibrary("androidx-compose-ui-tooling-preview").get())
+            implementation(platform(composeBom))
+            implementation(libs.findLibrary("androidx-compose-material3").get())
+            implementation(libs.findLibrary("androidx-compose-ui").get())
+            implementation(libs.findLibrary("androidx-compose-ui-tooling-preview").get())
 
-        androidTestImplementation(platform(composeBom))
-        androidTestImplementation(libs.findLibrary("androidx-compose-ui-test-junit4").get())
+            androidTestImplementation(platform(composeBom))
+            androidTestImplementation(libs.findLibrary("androidx-compose-ui-test-junit4").get())
 
-        debugImplementation(libs.findLibrary("androidx-compose-ui-test-manifest").get())
-        debugImplementation(libs.findLibrary("androidx-compose-ui-tooling").get())
+            debugImplementation(libs.findLibrary("androidx-compose-ui-test-manifest").get())
+            debugImplementation(libs.findLibrary("androidx-compose-ui-tooling").get())
+        }
     }
 }
