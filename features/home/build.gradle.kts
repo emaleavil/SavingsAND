@@ -15,6 +15,8 @@ dependencies {
     api(project(":ui:components"))
     api(project(":ui:theme"))
 
+    implementation(libs.androidx.compose.icons.extended)
+
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.espresso.core)
