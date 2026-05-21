@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation3.runtime.NavKey
 import androidx.savedstate.serialization.SavedStateConfiguration
+import com.eeema.android.add.navigation.addAddSubclasses
+import com.eeema.android.add.navigation.addEntries
 import com.eeema.android.components.navigation.NavigationRoot
 import com.eeema.android.home.navigation.addHomeSubclasses
 import com.eeema.android.home.navigation.homeEntries
@@ -27,14 +29,18 @@ class MainActivity : ComponentActivity() {
                     config = SavedStateConfiguration {
                         serializersModule = SerializersModule {
                             polymorphic(baseClass = NavKey::class) {
-                                addLoginSubclasses()
+                                addAddSubclasses()
                                 addHomeSubclasses()
+                                addLoginSubclasses()
                             }
                         }
                     },
                     addEntries = { scope, backStack ->
-                        scope.loginEntries(backStack)
-                        scope.homeEntries(backStack)
+                        with(scope) {
+                            addEntries(backStack)
+                            homeEntries(backStack)
+                            loginEntries(backStack)
+                        }
                     },
                 )
             }

@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
+import com.eeema.android.add.api.Add
+import com.eeema.android.components.navigation.navigate
 import com.eeema.android.theme.SavingsTheme
 
 enum class Tab {
@@ -67,7 +69,7 @@ fun HomeScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*backStack.navigate(to = ADD)*/ }) {
+            FloatingActionButton(onClick = { backStack.navigate(to = Add) }) {
                 Icon(
                     Icons.Default.Add,
                     contentDescription = "Add Transaction",
