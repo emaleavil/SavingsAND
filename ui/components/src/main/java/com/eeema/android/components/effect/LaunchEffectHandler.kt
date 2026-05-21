@@ -1,4 +1,4 @@
-package com.eeema.android.components
+package com.eeema.android.components.effect
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

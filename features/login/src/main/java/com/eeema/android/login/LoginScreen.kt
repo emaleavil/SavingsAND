@@ -39,7 +39,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.eeema.android.components.LaunchEffectHandler
+import com.eeema.android.components.effect.LaunchEffectHandler
 import com.eeema.android.theme.SavingsTheme
 import kotlinx.coroutines.launch
 
