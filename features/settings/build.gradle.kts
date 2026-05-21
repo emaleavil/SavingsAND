@@ -11,6 +11,8 @@ android {
 }
 
 dependencies {
+    api(project(":features:settings-api"))
+    api(project(":ui:components"))
     api(project(":ui:theme"))
 
     testImplementation(libs.junit)

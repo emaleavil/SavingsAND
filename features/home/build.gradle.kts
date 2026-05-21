@@ -13,6 +13,7 @@ android {
 dependencies {
     api(project(":features:add-api"))
     api(project(":features:home-api"))
+    api(project(":features:settings-api"))
     api(project(":ui:components"))
     api(project(":ui:theme"))
 

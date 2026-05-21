@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -29,6 +30,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.eeema.android.add.api.Add
 import com.eeema.android.components.navigation.navigate
+import com.eeema.android.settings.api.Settings
 import com.eeema.android.theme.SavingsTheme
 
 enum class Tab {
@@ -48,6 +50,14 @@ fun HomeScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Current Month here") },
+                actions = {
+                    IconButton(onClick = { backStack.navigate(Settings) }) {
+                        Icon(
+                            Icons.Filled.Settings,
+                            contentDescription = "Settings Button",
+                        )
+                    }
+                },
             )
         },
         bottomBar = {

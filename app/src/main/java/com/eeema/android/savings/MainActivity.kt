@@ -14,6 +14,8 @@ import com.eeema.android.home.navigation.homeEntries
 import com.eeema.android.login.api.SignIn
 import com.eeema.android.login.navigation.addLoginSubclasses
 import com.eeema.android.login.navigation.loginEntries
+import com.eeema.android.settings.navigation.addSettingsSubclasses
+import com.eeema.android.settings.navigation.settingsEntries
 import com.eeema.android.theme.SavingsTheme
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -32,6 +34,7 @@ class MainActivity : ComponentActivity() {
                                 addAddSubclasses()
                                 addHomeSubclasses()
                                 addLoginSubclasses()
+                                addSettingsSubclasses()
                             }
                         }
                     },
@@ -40,6 +43,7 @@ class MainActivity : ComponentActivity() {
                             addEntries(backStack)
                             homeEntries(backStack)
                             loginEntries(backStack)
+                            settingsEntries(backStack)
                         }
                     },
                 )
