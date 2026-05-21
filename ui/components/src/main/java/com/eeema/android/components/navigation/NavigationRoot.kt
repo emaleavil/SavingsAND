@@ -36,7 +36,17 @@ fun NavBackStack<NavKey>.goBack() {
     removeLastOrNull()
 }
 
-fun NavBackStack<NavKey>.navigate(to: NavKey, clearPrevious: Boolean) {
-    if (clearPrevious) removeLastOrNull()
+fun NavBackStack<NavKey>.navigate(to: NavKey, clear: ClearBackStack = ClearBackStack.NONE) {
+    when (clear) {
+        ClearBackStack.ALL -> clear()
+        ClearBackStack.PREVIOUS -> removeLastOrNull()
+        ClearBackStack.NONE -> {}
+    }
     add(to)
+}
+
+enum class ClearBackStack {
+    ALL,
+    PREVIOUS,
+    NONE,
 }

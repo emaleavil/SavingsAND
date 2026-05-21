@@ -43,8 +43,10 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.eeema.android.components.effect.LaunchEffectHandler
+import com.eeema.android.components.navigation.ClearBackStack
 import com.eeema.android.components.navigation.goBack
 import com.eeema.android.components.navigation.navigate
+import com.eeema.android.home.api.Home
 import com.eeema.android.login.api.SignUp
 import com.eeema.android.theme.SavingsTheme
 import kotlinx.coroutines.launch
@@ -125,7 +127,7 @@ private fun LoginContent(
                     modifier = Modifier
                         .align(Alignment.End)
                         .alpha(if (type is LoginType.SignIn) 1f else 0f)
-                        .clickable(role = Role.Button) { backStack.navigate(SignUp, false) },
+                        .clickable(role = Role.Button) { backStack.navigate(to = SignUp, clear = ClearBackStack.NONE) },
                 )
 
                 Button(
@@ -166,8 +168,15 @@ private fun LoginContent(
         state.effect,
         onEffect = {
             when (it) {
-                is LoginUiEffect.NavigateToHome -> { /*backStack.navigate()*/ }
+                is LoginUiEffect.NavigateToHome -> {
+                    backStack.navigate(
+                        to = Home,
+                        clear = if (type == LoginType.SignIn) ClearBackStack.PREVIOUS else ClearBackStack.ALL,
+                    )
+                }
+
                 is LoginUiEffect.ShowError -> scope.launch { snackbarHostState.showSnackbar(it.message) }
+
                 else -> { /*No op*/ }
             }
         },

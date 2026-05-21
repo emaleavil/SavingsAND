@@ -11,6 +11,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":features:home-api"))
     api(project(":features:login-api"))
     api(project(":ui:components"))
 
