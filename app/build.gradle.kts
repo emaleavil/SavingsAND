@@ -84,7 +84,6 @@ dependencies {
     implementation(project(":features:home"))
     implementation(project(":features:login"))
     implementation(project(":features:settings"))
-    implementation(project(":features:transactions"))
 
     testImplementation(libs.junit)
 
