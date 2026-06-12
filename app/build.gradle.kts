@@ -11,6 +11,11 @@ plugins {
             .get()
             .pluginId,
     )
+    id(
+        libs.plugins.custom.android.lint
+            .get()
+            .pluginId,
+    )
 }
 
 android {
@@ -47,6 +52,18 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+
+    lint {
+        abortOnError = true
+        warningsAsErrors = false
+
+        htmlReport = true
+        xmlReport = true
+        sarifReport = true
+
+        checkGeneratedSources = false
+        checkDependencies = false
     }
 }
 

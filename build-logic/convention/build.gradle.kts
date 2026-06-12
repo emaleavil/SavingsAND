@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.android.lint)
 }
 
 group = "com.eeema.android.buildlogic"
@@ -31,6 +32,7 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.spotless.gradlePlugin)
     compileOnly(libs.detekt.gradlePlugin)
+    lintChecks(libs.androidx.lint.gradle)
 }
 
 gradlePlugin {
@@ -50,6 +52,10 @@ gradlePlugin {
         register("androidLibraryCompose") {
             id = libs.plugins.custom.android.libraryCompose.get().pluginId
             implementationClass = "com.eeema.android.buildlogic.AndroidLibraryComposeConventionPlugin"
+        }
+        register("androidLint") {
+            id = libs.plugins.custom.android.lint.get().pluginId
+            implementationClass = "com.eeema.android.buildlogic.AndroidLintConventionPlugin"
         }
     }
 }
