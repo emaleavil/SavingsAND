@@ -1,6 +1,10 @@
 package com.eeema.android.savings
 
 import android.app.Application
+import com.eeema.android.add.di.addModule
+import com.eeema.android.home.di.homeModule
+import com.eeema.android.login.di.loginModule
+import com.eeema.android.settings.di.settingsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext
@@ -14,6 +18,12 @@ class SavingsApplication : Application() {
         GlobalContext.startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@SavingsApplication)
+            modules(
+                addModule +
+                    homeModule +
+                    loginModule +
+                    settingsModule,
+            )
         }
     }
 }

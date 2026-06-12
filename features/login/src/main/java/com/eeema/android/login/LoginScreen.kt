@@ -50,13 +50,14 @@ import com.eeema.android.home.api.Home
 import com.eeema.android.login.api.SignUp
 import com.eeema.android.theme.SavingsTheme
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun LoginScreen(
     type: LoginType,
     backStack: NavBackStack<NavKey>,
 ) {
-    val viewModel = viewModel<LoginViewModel>()
+    val viewModel = koinViewModel<LoginViewModel>()
     LoginContent(
         state = viewModel.state.collectAsStateWithLifecycle().value,
         type = type,
