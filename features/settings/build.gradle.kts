@@ -16,6 +16,7 @@ dependencies {
     api(project(":ui:theme"))
 
     testImplementation(libs.junit)
+    implementation(libs.koin.androidx.compose)
 
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
