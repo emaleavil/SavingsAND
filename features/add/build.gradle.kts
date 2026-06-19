@@ -15,7 +15,6 @@ dependencies {
     api(project(":ui:components"))
     api(project(":ui:theme"))
 
-    implementation(libs.androidx.compose.icons.extended)
     implementation(libs.koin.androidx.compose)
 
     testImplementation(libs.junit)

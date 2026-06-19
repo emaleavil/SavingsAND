@@ -11,6 +11,8 @@ android {
 }
 
 dependencies {
+    api(libs.androidx.compose.icons.extended)
+
     // TODO remove these libraries if unnecessary
     testImplementation(libs.junit)
 
