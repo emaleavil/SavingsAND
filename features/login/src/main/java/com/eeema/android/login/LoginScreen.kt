@@ -24,6 +24,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -78,6 +80,9 @@ private fun LoginContent(
     val password = rememberTextFieldState()
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val isButtonEnabled by remember {
+        derivedStateOf { email.text.isNotBlank() && password.text.isNotBlank() }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -146,6 +151,7 @@ private fun LoginContent(
                             ),
                         )
                     },
+                    enabled = isButtonEnabled
                 ) {
                     Box(
                         modifier = Modifier.width(120.dp),
