@@ -18,7 +18,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -38,7 +37,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -46,6 +44,8 @@ import com.eeema.android.components.effect.LaunchEffectHandler
 import com.eeema.android.components.navigation.ClearBackStack
 import com.eeema.android.components.navigation.goBack
 import com.eeema.android.components.navigation.navigate
+import com.eeema.android.components.textfields.EmailField
+import com.eeema.android.components.textfields.PasswordField
 import com.eeema.android.home.api.Home
 import com.eeema.android.login.api.SignUp
 import com.eeema.android.theme.SavingsTheme
@@ -113,22 +113,27 @@ private fun LoginContent(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                OutlinedTextField(
+                EmailField(
                     state = email,
-                    label = { Text("Email") },
-                    modifier = Modifier.fillMaxWidth(),
+                    label = "Email",
+                    modifier = Modifier.fillMaxWidth()
                 )
-                OutlinedTextField(
+                PasswordField(
                     state = password,
-                    label = { Text("Password") },
-                    modifier = Modifier.fillMaxWidth(),
+                    label = "Password",
+                    modifier = Modifier.fillMaxWidth()
                 )
                 Text(
                     "Don't have an account? Sign Up",
                     modifier = Modifier
                         .align(Alignment.End)
                         .alpha(if (type is LoginType.SignIn) 1f else 0f)
-                        .clickable(role = Role.Button) { backStack.navigate(to = SignUp, clear = ClearBackStack.NONE) },
+                        .clickable(role = Role.Button) {
+                            backStack.navigate(
+                                to = SignUp,
+                                clear = ClearBackStack.NONE
+                            )
+                        },
                 )
 
                 Button(
