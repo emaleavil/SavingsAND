@@ -18,13 +18,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -32,52 +29,35 @@ import com.eeema.android.add.api.Add
 import com.eeema.android.components.navigation.navigate
 import com.eeema.android.settings.api.Settings
 import com.eeema.android.theme.SavingsTheme
+import org.koin.compose.koinInject
 
 enum class Tab {
     SUMMARY,
     TRANSACTIONS,
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     backStack: NavBackStack<NavKey>,
 ) {
-    var currentTab by remember { mutableStateOf(Tab.SUMMARY) }
+    val viewModel = koinInject<HomeViewModel>()
+    HomeContent(
+        state = viewModel.state.collectAsStateWithLifecycle().value,
+        onEvent = viewModel::onEvent,
+        backStack = backStack
+    )
+}
 
+@Composable
+private fun HomeContent(
+    state: HomeUiState,
+    onEvent: (HomeUiEvent) -> Unit,
+    backStack: NavBackStack<NavKey>
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = { Text("Current Month here") },
-                actions = {
-                    IconButton(onClick = { backStack.navigate(Settings) }) {
-                        Icon(
-                            Icons.Filled.Settings,
-                            contentDescription = "Settings Button",
-                        )
-                    }
-                },
-            )
-        },
-        bottomBar = {
-            BottomAppBar {
-                IconButton(onClick = { currentTab = Tab.SUMMARY }) {
-                    Icon(
-                        Icons.Filled.Home,
-                        contentDescription = "Summary View",
-                        tint = if (currentTab == Tab.SUMMARY) colorScheme.primary else colorScheme.onSurface,
-                    )
-                }
-                IconButton(onClick = { currentTab = Tab.TRANSACTIONS }) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.List,
-                        contentDescription = "List of transactions",
-                        tint = if (currentTab == Tab.TRANSACTIONS) colorScheme.primary else colorScheme.onSurface,
-                    )
-                }
-            }
-        },
+        topBar = { HomeTopBar(onTopBarClicked = { backStack.navigate(Settings) }) },
+        bottomBar = { HomeBottomBar(state.currentTab) { onEvent(HomeUiEvent.OnTabChanged(tab = it)) } },
         floatingActionButton = {
             FloatingActionButton(onClick = { backStack.navigate(to = Add) }) {
                 Icon(
@@ -87,12 +67,61 @@ fun HomeScreen(
             }
         },
     ) {
-        Box(modifier = Modifier.padding(it).padding(horizontal = 20.dp)) {
-            if (currentTab == Tab.SUMMARY) {
-                Text("Welcome to the Summary Screen!")
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+                .padding(horizontal = 20.dp)
+        ) {
+            if (state.currentTab == Tab.SUMMARY) {
+                SummaryView(
+                    state = state.summary,
+                    modifier = Modifier.matchParentSize()
+                )
             } else {
                 Text("Welcome to the List Screen!")
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun HomeTopBar(
+    onTopBarClicked: () -> Unit
+) {
+    TopAppBar(
+        title = { Text("Current Month here") },
+        actions = {
+            IconButton(onClick = onTopBarClicked) {
+                Icon(
+                    Icons.Filled.Settings,
+                    contentDescription = "Settings",
+                )
+            }
+        },
+    )
+}
+
+@Composable
+private fun HomeBottomBar(
+    currentTab: Tab,
+    onClicked: (Tab) -> Unit
+) {
+    BottomAppBar {
+        IconButton(onClick = { onClicked(Tab.SUMMARY) }) {
+            Icon(
+                Icons.Filled.Home,
+                contentDescription = "Summary",
+                tint = if (currentTab == Tab.SUMMARY) colorScheme.primary else colorScheme.onSurface,
+            )
+        }
+        IconButton(onClick = { onClicked(Tab.TRANSACTIONS) }) {
+            Icon(
+                Icons.AutoMirrored.Filled.List,
+                contentDescription = "List of transactions",
+                tint = if (currentTab == Tab.TRANSACTIONS) colorScheme.primary else colorScheme.onSurface,
+            )
         }
     }
 }
@@ -101,6 +130,10 @@ fun HomeScreen(
 @Composable
 private fun Preview() {
     SavingsTheme {
-        HomeScreen(backStack = rememberNavBackStack())
+        HomeContent(
+            state = HomeUiState(currentTab = Tab.SUMMARY),
+            onEvent = {},
+            backStack = rememberNavBackStack()
+        )
     }
 }
