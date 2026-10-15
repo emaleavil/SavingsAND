@@ -79,7 +79,9 @@ private fun HomeContent(
                     modifier = Modifier.matchParentSize()
                 )
             } else {
-                Text("Welcome to the List Screen!")
+                TransactionsView(
+                    state = state.transactions
+                )
             }
         }
     }
@@ -131,7 +133,37 @@ private fun HomeBottomBar(
 private fun Preview() {
     SavingsTheme {
         HomeContent(
-            state = HomeUiState(currentTab = Tab.SUMMARY),
+            state = HomeUiState(
+                currentTab = Tab.TRANSACTIONS,
+                summary = SummaryUiState(
+                    percentage = 30f
+                ),
+                transactions = TransactionsUiState(
+                    listOf(
+                        TransactionUiModel(
+                            id = 123L,
+                            description = "Salario",
+                            quantity = "2500$",
+                            date = "7/10/2026",
+                            isIncome = true
+                        ),
+                        TransactionUiModel(
+                            id = 123L,
+                            description = "Compra Mercadona",
+                            quantity = "123$",
+                            date = "18/10/2026",
+                            isIncome = false
+                        ),
+                        TransactionUiModel(
+                            id = 123L,
+                            description = "Gasolina",
+                            quantity = "53$",
+                            date = "13/10/2026",
+                            isIncome = false
+                        )
+                    )
+                )
+            ),
             onEvent = {},
             backStack = rememberNavBackStack()
         )
