@@ -13,7 +13,7 @@ import kotlin.time.Duration.Companion.seconds
 class HomeViewModel : ViewModel() {
 
     private var _state: MutableStateFlow<HomeUiState> = MutableStateFlow(
-        HomeUiState(currentTab = Tab.SUMMARY)
+        HomeUiState(currentTab = Tab.SUMMARY),
     )
     val state: StateFlow<HomeUiState> = _state.asStateFlow()
 

@@ -121,12 +121,12 @@ private fun LoginContent(
                 EmailField(
                     state = email,
                     label = "Email",
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 PasswordField(
                     state = password,
                     label = "Password",
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 Text(
                     "Don't have an account? Sign Up",
@@ -136,7 +136,7 @@ private fun LoginContent(
                         .clickable(role = Role.Button) {
                             backStack.navigate(
                                 to = SignUp,
-                                clear = ClearBackStack.NONE
+                                clear = ClearBackStack.NONE,
                             )
                         },
                 )
@@ -151,7 +151,7 @@ private fun LoginContent(
                             ),
                         )
                     },
-                    enabled = isButtonEnabled
+                    enabled = isButtonEnabled,
                 ) {
                     Box(
                         modifier = Modifier.width(120.dp),

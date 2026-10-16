@@ -44,7 +44,7 @@ fun HomeScreen(
     HomeContent(
         state = viewModel.state.collectAsStateWithLifecycle().value,
         onEvent = viewModel::onEvent,
-        backStack = backStack
+        backStack = backStack,
     )
 }
 
@@ -52,7 +52,7 @@ fun HomeScreen(
 private fun HomeContent(
     state: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit,
-    backStack: NavBackStack<NavKey>
+    backStack: NavBackStack<NavKey>,
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -71,16 +71,16 @@ private fun HomeContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 20.dp),
         ) {
             if (state.currentTab == Tab.SUMMARY) {
                 SummaryView(
                     state = state.summary,
-                    modifier = Modifier.matchParentSize()
+                    modifier = Modifier.matchParentSize(),
                 )
             } else {
                 TransactionsView(
-                    state = state.transactions
+                    state = state.transactions,
                 )
             }
         }
@@ -90,7 +90,7 @@ private fun HomeContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeTopBar(
-    onTopBarClicked: () -> Unit
+    onTopBarClicked: () -> Unit,
 ) {
     TopAppBar(
         title = { Text("Current Month here") },
@@ -108,7 +108,7 @@ private fun HomeTopBar(
 @Composable
 private fun HomeBottomBar(
     currentTab: Tab,
-    onClicked: (Tab) -> Unit
+    onClicked: (Tab) -> Unit,
 ) {
     BottomAppBar {
         IconButton(onClick = { onClicked(Tab.SUMMARY) }) {
@@ -136,7 +136,7 @@ private fun Preview() {
             state = HomeUiState(
                 currentTab = Tab.TRANSACTIONS,
                 summary = SummaryUiState(
-                    percentage = 30f
+                    percentage = 30f,
                 ),
                 transactions = TransactionsUiState(
                     listOf(
@@ -145,27 +145,27 @@ private fun Preview() {
                             description = "Salario",
                             quantity = "2500$",
                             date = "7/10/2026",
-                            isIncome = true
+                            isIncome = true,
                         ),
                         TransactionUiModel(
                             id = 123L,
                             description = "Compra Mercadona",
                             quantity = "123$",
                             date = "18/10/2026",
-                            isIncome = false
+                            isIncome = false,
                         ),
                         TransactionUiModel(
                             id = 123L,
                             description = "Gasolina",
                             quantity = "53$",
                             date = "13/10/2026",
-                            isIncome = false
-                        )
-                    )
-                )
+                            isIncome = false,
+                        ),
+                    ),
+                ),
             ),
             onEvent = {},
-            backStack = rememberNavBackStack()
+            backStack = rememberNavBackStack(),
         )
     }
 }

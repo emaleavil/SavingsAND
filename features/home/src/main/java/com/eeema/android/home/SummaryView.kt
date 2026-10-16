@@ -18,23 +18,23 @@ import com.eeema.android.theme.SavingsTheme
 @Composable
 internal fun SummaryView(
     state: SummaryUiState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.padding(top = 32.dp),
-        verticalArrangement = Arrangement.spacedBy(32.dp)
+        verticalArrangement = Arrangement.spacedBy(32.dp),
     ) {
         CircularPercentageCard(percentage = state.percentage)
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             InfoCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
                 title = "Spent",
-                description = "800$"
+                description = "800$",
             )
             InfoCard(
                 modifier = Modifier
@@ -42,7 +42,7 @@ internal fun SummaryView(
                     .weight(1f),
                 title = "Remaining",
                 description = "1000$",
-                backgroundColor = MaterialTheme.colorScheme.secondary
+                backgroundColor = MaterialTheme.colorScheme.secondary,
             )
         }
     }
@@ -54,7 +54,7 @@ private fun Preview() {
     SavingsTheme {
         SummaryView(
             state = SummaryUiState(percentage = 34f),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }

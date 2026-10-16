@@ -3,15 +3,15 @@ package com.eeema.android.home
 data class HomeUiState(
     val currentTab: Tab,
     val summary: SummaryUiState = SummaryUiState(0f),
-    val transactions: TransactionsUiState = TransactionsUiState(listOf())
+    val transactions: TransactionsUiState = TransactionsUiState(listOf()),
 )
 
 data class SummaryUiState(
-    val percentage: Float
+    val percentage: Float,
 )
 
 data class TransactionsUiState(
-    val transactions: List<TransactionUiModel>
+    val transactions: List<TransactionUiModel>,
 )
 
 data class TransactionUiModel(
@@ -19,5 +19,5 @@ data class TransactionUiModel(
     val description: String,
     val quantity: String,
     val date: String,
-    val isIncome: Boolean
+    val isIncome: Boolean,
 )

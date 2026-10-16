@@ -17,23 +17,23 @@ import com.eeema.android.theme.SavingsTheme
 
 @Composable
 fun CircularPercentageCard(
-    percentage: Float
+    percentage: Float,
 ) {
     OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f) // TODO create theme color
-        )
+            containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f), // TODO create theme color
+        ),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             CircularPercentage(
                 percentage = percentage,
-                modifier = Modifier.size(150.dp)
+                modifier = Modifier.size(150.dp),
             )
         }
     }

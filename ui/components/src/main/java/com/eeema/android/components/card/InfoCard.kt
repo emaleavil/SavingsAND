@@ -22,27 +22,27 @@ fun InfoCard(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
-    backgroundColor: Color = MaterialTheme.colorScheme.primary
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     OutlinedCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = backgroundColor
-        )
+            containerColor = backgroundColor,
+        ),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(
                 8.dp,
-                alignment = Alignment.CenterVertically
+                alignment = Alignment.CenterVertically,
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(96.dp)
+                .height(96.dp),
         ) {
             Text(
                 title,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
             )
             Text(description, style = MaterialTheme.typography.bodyMedium)
         }
@@ -55,16 +55,16 @@ private fun Preview() {
     SavingsTheme {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             InfoCard(
                 title = "Spent",
-                description = "1000$"
+                description = "1000$",
             )
             InfoCard(
                 title = "Remaining",
                 description = "500$",
-                backgroundColor = MaterialTheme.colorScheme.secondary
+                backgroundColor = MaterialTheme.colorScheme.secondary,
             )
         }
     }

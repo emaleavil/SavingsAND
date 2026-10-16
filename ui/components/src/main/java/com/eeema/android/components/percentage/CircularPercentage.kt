@@ -26,28 +26,28 @@ fun CircularPercentage(
     modifier: Modifier = Modifier,
     strokeWidth: Dp = 12.dp,
     color: Color = MaterialTheme.colorScheme.primary,
-    trackColor: Color = MaterialTheme.colorScheme.surfaceVariant
+    trackColor: Color = MaterialTheme.colorScheme.surfaceVariant,
 ) {
     val progress = (percentage / 100f).coerceIn(0f, 1.0f)
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
-        animationSpec = ProgressAnimationSpec
+        animationSpec = ProgressAnimationSpec,
     )
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.aspectRatio(1f)
+        modifier = modifier.aspectRatio(1f),
     ) {
         CircularProgressIndicator(
             progress = { animatedProgress },
             modifier = Modifier.fillMaxSize(),
             strokeWidth = strokeWidth,
             color = color,
-            trackColor = trackColor
+            trackColor = trackColor,
         )
         Text(
             text = "${(animatedProgress * 100).toInt()}%",
-            style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold)
+            style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
         )
     }
 }
@@ -58,7 +58,7 @@ private fun Preview() {
     SavingsTheme {
         CircularPercentage(
             percentage = 50f,
-            modifier = Modifier.size(300.dp)
+            modifier = Modifier.size(300.dp),
         )
     }
 }

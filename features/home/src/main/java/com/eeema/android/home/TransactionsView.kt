@@ -21,12 +21,12 @@ import com.eeema.android.theme.SavingsTheme
 
 @Composable
 fun TransactionsView(
-    state: TransactionsUiState
+    state: TransactionsUiState,
 ) {
     val listState = rememberLazyListState()
     LazyColumn(
         state = listState,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         items(state.transactions) { transaction ->
             OutlinedCard {
@@ -34,20 +34,20 @@ fun TransactionsView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f))
-                        .padding(8.dp)
+                        .padding(8.dp),
                 ) {
                     Text(
                         transaction.description,
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                     )
                     Text(
                         transaction.date,
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
                     )
                     Text(
                         if (transaction.isIncome) "+${transaction.quantity}" else "-${transaction.quantity}",
                         style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.align(alignment = Alignment.End)
+                        modifier = Modifier.align(alignment = Alignment.End),
                     )
                 }
             }
@@ -67,24 +67,24 @@ private fun Preview() {
                         description = "Salario",
                         quantity = "2500$",
                         date = "7/10/2026",
-                        isIncome = true
+                        isIncome = true,
                     ),
                     TransactionUiModel(
                         id = 123L,
                         description = "Compra Mercadona",
                         quantity = "123$",
                         date = "18/10/2026",
-                        isIncome = false
+                        isIncome = false,
                     ),
                     TransactionUiModel(
                         id = 123L,
                         description = "Gasolina",
                         quantity = "53$",
                         date = "13/10/2026",
-                        isIncome = false
-                    )
-                )
-            )
+                        isIncome = false,
+                    ),
+                ),
+            ),
         )
     }
 }
