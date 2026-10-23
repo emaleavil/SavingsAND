@@ -72,7 +72,7 @@ private fun HomeContent(
                     backStack.navigate(to = Add)
                 },
                 containerColor = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary
+                contentColor = MaterialTheme.colorScheme.onTertiary,
             ) {
                 if (state.isLoading) {
                     CircularProgressIndicator(
