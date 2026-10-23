@@ -79,8 +79,11 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.koin.androidx.compose)
 
-    // Feature modules
+    implementation(project(":data"))
+
     implementation(project(":domain"))
+
+    // Feature modules
     implementation(project(":features:add"))
     implementation(project(":features:home"))
     implementation(project(":features:login"))

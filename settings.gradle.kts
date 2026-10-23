@@ -30,15 +30,20 @@ rootProject.name = "Savings"
 // App Module
 include(":app")
 
+include(":data")
+
+include(":domain")
+
 // Feature modules
 include(":features:add")
 include(":features:home")
 include(":features:login")
 include(":features:login-api")
 include(":features:settings")
-include(":ui:components")
-include(":ui:theme")
 include(":features:home-api")
 include(":features:add-api")
 include(":features:settings-api")
-include(":domain")
+
+// Utility modules
+include(":ui:components")
+include(":ui:theme")

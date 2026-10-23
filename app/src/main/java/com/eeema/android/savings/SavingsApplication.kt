@@ -2,6 +2,7 @@ package com.eeema.android.savings
 
 import android.app.Application
 import com.eeema.android.add.di.addModule
+import com.eeema.android.data.di.dataModule
 import com.eeema.android.domain.di.domainModule
 import com.eeema.android.home.di.homeModule
 import com.eeema.android.login.di.loginModule
@@ -23,7 +24,8 @@ class SavingsApplication : Application() {
                     homeModule +
                     loginModule +
                         settingsModule +
-                        domainModule
+                        domainModule +
+                        dataModule,
             )
         }
     }
