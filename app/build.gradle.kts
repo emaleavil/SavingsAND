@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.koin.androidx.compose)
 
     // Feature modules
+    implementation(project(":domain"))
     implementation(project(":features:add"))
     implementation(project(":features:home"))
     implementation(project(":features:login"))

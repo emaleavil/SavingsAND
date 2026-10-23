@@ -2,13 +2,13 @@ package com.eeema.android.savings
 
 import android.app.Application
 import com.eeema.android.add.di.addModule
+import com.eeema.android.domain.di.domainModule
 import com.eeema.android.home.di.homeModule
 import com.eeema.android.login.di.loginModule
 import com.eeema.android.settings.di.settingsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext
-import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
 class SavingsApplication : Application() {
@@ -22,7 +22,8 @@ class SavingsApplication : Application() {
                 addModule +
                     homeModule +
                     loginModule +
-                    settingsModule,
+                        settingsModule +
+                        domainModule,
             )
         }
     }

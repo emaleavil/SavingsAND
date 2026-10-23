@@ -11,6 +11,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
     api(project(":features:add-api"))
     api(project(":features:home-api"))
     api(project(":features:settings-api"))
