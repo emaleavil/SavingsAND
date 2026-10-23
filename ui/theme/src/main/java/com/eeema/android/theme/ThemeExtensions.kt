@@ -1,5 +1,6 @@
 package com.eeema.android.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -22,4 +23,5 @@ val MaterialTheme.outlinedTextFieldColors: TextFieldColors
         )
 
 val ColorScheme.backgroundColor600: Color
-    get() = BackgroundColor600
+    @Composable
+    get() = if (isSystemInDarkTheme()) BackgroundColor600 else BackgroundColor600Light
