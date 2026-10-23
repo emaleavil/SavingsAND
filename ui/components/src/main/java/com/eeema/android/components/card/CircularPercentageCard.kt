@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.eeema.android.components.percentage.CircularPercentage
 import com.eeema.android.theme.SavingsTheme
+import com.eeema.android.theme.backgroundColor600
 
 @Composable
 fun CircularPercentageCard(
@@ -22,7 +23,7 @@ fun CircularPercentageCard(
     OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f), // TODO create theme color
+            containerColor = MaterialTheme.colorScheme.backgroundColor600,
         ),
     ) {
         Box(
