@@ -3,6 +3,7 @@ package com.eeema.android.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.eeema.android.theme.SavingsTheme
+import com.eeema.android.theme.backgroundColor600
 
 @Composable
 fun TransactionsView(
@@ -26,14 +28,15 @@ fun TransactionsView(
     val listState = rememberLazyListState()
     LazyColumn(
         state = listState,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(top = 32.dp, bottom = 80.dp),
     ) {
-        items(state.transactions) { transaction ->
+        items(state.transactions, key = { it.id }) { transaction ->
             OutlinedCard {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f))
+                        .background(color = MaterialTheme.colorScheme.backgroundColor600)
                         .padding(8.dp),
                 ) {
                     Text(
@@ -63,21 +66,21 @@ private fun Preview() {
             state = TransactionsUiState(
                 transactions = listOf(
                     TransactionUiModel(
-                        id = 123L,
+                        id = "123L",
                         description = "Salario",
                         quantity = "2500$",
                         date = "7/10/2026",
                         isIncome = true,
                     ),
                     TransactionUiModel(
-                        id = 123L,
+                        id = "124L",
                         description = "Compra Mercadona",
                         quantity = "123$",
                         date = "18/10/2026",
                         isIncome = false,
                     ),
                     TransactionUiModel(
-                        id = 123L,
+                        id = "125L",
                         description = "Gasolina",
                         quantity = "53$",
                         date = "13/10/2026",

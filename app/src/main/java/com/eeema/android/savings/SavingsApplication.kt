@@ -23,7 +23,7 @@ class SavingsApplication : Application() {
                     homeModule +
                     loginModule +
                         settingsModule +
-                        domainModule,
+                        domainModule
             )
         }
     }

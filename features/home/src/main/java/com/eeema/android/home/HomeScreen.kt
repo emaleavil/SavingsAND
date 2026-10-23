@@ -1,18 +1,25 @@
 package com.eeema.android.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -59,18 +66,34 @@ private fun HomeContent(
         topBar = { HomeTopBar(onTopBarClicked = { backStack.navigate(Settings) }) },
         bottomBar = { HomeBottomBar(state.currentTab) { onEvent(HomeUiEvent.OnTabChanged(tab = it)) } },
         floatingActionButton = {
-            FloatingActionButton(onClick = { backStack.navigate(to = Add) }) {
-                Icon(
-                    Icons.Default.Add,
-                    contentDescription = "Add Transaction",
-                )
+            FloatingActionButton(
+                onClick = {
+                    if (state.isLoading) return@FloatingActionButton
+                    backStack.navigate(to = Add)
+                },
+                containerColor = MaterialTheme.colorScheme.tertiary,
+                contentColor = MaterialTheme.colorScheme.onTertiary
+            ) {
+                if (state.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.onTertiary,
+                    )
+                } else {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = "Add Transaction",
+                    )
+                }
             }
         },
-    ) {
+    ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(paddingValues)
+                .consumeWindowInsets(paddingValues)
                 .padding(horizontal = 20.dp),
         ) {
             if (state.currentTab == Tab.SUMMARY) {
@@ -79,9 +102,15 @@ private fun HomeContent(
                     modifier = Modifier.matchParentSize(),
                 )
             } else {
-                TransactionsView(
-                    state = state.transactions,
-                )
+                AnimatedVisibility(
+                    visible = !state.isLoading,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    TransactionsView(
+                        state = state.transactions,
+                    )
+                }
             }
         }
     }
@@ -134,28 +163,31 @@ private fun Preview() {
     SavingsTheme {
         HomeContent(
             state = HomeUiState(
+                isLoading = false,
                 currentTab = Tab.TRANSACTIONS,
                 summary = SummaryUiState(
                     percentage = 30f,
+                    spent = 700f,
+                    remaining = 1000f,
                 ),
                 transactions = TransactionsUiState(
                     listOf(
                         TransactionUiModel(
-                            id = 123L,
+                            id = "123L",
                             description = "Salario",
                             quantity = "2500$",
                             date = "7/10/2026",
                             isIncome = true,
                         ),
                         TransactionUiModel(
-                            id = 123L,
+                            id = "124L",
                             description = "Compra Mercadona",
                             quantity = "123$",
                             date = "18/10/2026",
                             isIncome = false,
                         ),
                         TransactionUiModel(
-                            id = 123L,
+                            id = "125L",
                             description = "Gasolina",
                             quantity = "53$",
                             date = "13/10/2026",

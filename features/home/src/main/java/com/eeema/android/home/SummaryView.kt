@@ -34,14 +34,14 @@ internal fun SummaryView(
                     .fillMaxWidth()
                     .weight(1f),
                 title = "Spent",
-                description = "800$",
+                description = "${state.spent}$",
             )
             InfoCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
                 title = "Remaining",
-                description = "1000$",
+                description = "${state.remaining}$",
                 backgroundColor = MaterialTheme.colorScheme.secondary,
             )
         }
@@ -53,7 +53,7 @@ internal fun SummaryView(
 private fun Preview() {
     SavingsTheme {
         SummaryView(
-            state = SummaryUiState(percentage = 34f),
+            state = SummaryUiState(percentage = 34f, spent = 800f, remaining = 1000f),
             modifier = Modifier.fillMaxSize(),
         )
     }
