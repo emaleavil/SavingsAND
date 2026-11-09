@@ -36,7 +36,7 @@ import com.eeema.android.add.api.Add
 import com.eeema.android.components.navigation.navigate
 import com.eeema.android.settings.api.Settings
 import com.eeema.android.theme.SavingsTheme
-import org.koin.compose.koinInject
+import org.koin.androidx.compose.koinViewModel
 
 enum class Tab {
     SUMMARY,
@@ -47,7 +47,7 @@ enum class Tab {
 fun HomeScreen(
     backStack: NavBackStack<NavKey>,
 ) {
-    val viewModel = koinInject<HomeViewModel>()
+    val viewModel = koinViewModel<HomeViewModel>()
     HomeContent(
         state = viewModel.state.collectAsStateWithLifecycle().value,
         onEvent = viewModel::onEvent,
