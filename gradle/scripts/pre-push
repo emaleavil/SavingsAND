@@ -1,31 +1,193 @@
 #!/bin/bash
+#
+# Runs Spotless check before pushing. Fails (and explains how to fix it) if
+# the committed code is not correctly formatted.
+#
+# Instead of running one Gradle invocation per file, the script groups the
+# files that are ready to push by Gradle module and checks every touched
+# module's `spotlessCheck` in a single Gradle invocation (--continue, so one
+# failing module does not hide the outcome of the others). When a module
+# fails, it cross-references the files ready to push with the violations
+# reported by Spotless and points at the offending files, so the push is only
+# rejected for code that is actually about to be published.
+#
+set -u
 
 currentBranch=$(git branch --show-current)
-readyToPushFiles=$(git diff --name-only origin/$currentBranch...HEAD)
 
-echo "Running spotless check for each file"
-allChecksPassed=true
-failedFiles=()
-
-for file in $readyToPushFiles; do
-    if test -f "$file"; then
-        ./gradlew spotlessCheck -Pfile=$file > /dev/null 2>&1
-
-        if [ $? -ne 0 ]; then
-            failedFiles+=("$file")
-            allChecksPassed=false
-        else
-            git add $file
-        fi
-    fi
-done
-
-if [ "$allChecksPassed" = false ]; then
-    echo "❌ Spotless check failed for the following files:" >&2
-    for file in "${failedFiles[@]}"; do
-        echo "  - $file" >&2
-    done
+if [ -z "$currentBranch" ]; then
+    echo "❌ Cannot determine the current branch (detached HEAD?), aborting." >&2
     exit 1
 fi
 
-echo "✅ spotless check succeed for all files"
+# Determine the diff range. If the remote branch does not exist yet
+# (first push), fall back to the last commit so we still check something.
+if git rev-parse --verify --quiet "origin/$currentBranch" > /dev/null; then
+    base="origin/$currentBranch"
+else
+    echo "ℹ️  No remote branch origin/$currentBranch, diffing against HEAD~1"
+    base="HEAD~1"
+fi
+
+# Committed files ready to push that Spotless can format. Deleted files (D)
+# are filtered out, so this only reports about files that still exist.
+formattable='\.(kt|kts|xml|md|yml|yaml|gitignore)$'
+changedFiles=()
+while IFS= read -r file; do
+    changedFiles+=("$file")
+done < <(git diff --name-only --diff-filter=ACMR "$base"...HEAD | grep -E "$formattable")
+
+if [ ${#changedFiles[@]} -eq 0 ]; then
+    echo "✅ No formattable files changed, skipping spotless check"
+    exit 0
+else
+    echo "Files changed: $changedFiles"
+fi
+
+# Returns 0 when the given needle is inside the remaining arguments.
+# Written for macOS' bash 3.2 (no associative arrays available).
+contains() {
+    needle="$1"
+    shift
+    for item in "$@"; do
+        if [ "$item" = "$needle" ]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Prints the Gradle module that owns a file: the closest ancestor directory
+# containing a build.gradle.kts (no need to hardcode settings.gradle.kts, and
+# it survives nesting like features/home). Fails for files living outside of
+# any module (root level, gradle/, build-logic/...), where Spotless is not
+# applied at all.
+findModule() {
+    local dir="$1"
+    case "$dir" in */*) dir="${dir%/*}" ;; *) dir="" ;; esac
+    while [ -n "$dir" ]; do
+        if [ -f "$dir/build.gradle.kts" ]; then
+            printf '%s' "$dir"
+            return 0
+        fi
+        case "$dir" in */*) dir="${dir%/*}" ;; *) dir="" ;; esac
+    done
+    return 1
+}
+
+moduleOf=()          # module owning changedFiles[i], or "" if uncovered
+modules=()           # unique list of covered modules
+uncoveredFiles=()    # changed files with no owning module
+
+for file in "${changedFiles[@]}"; do
+    if module=$(findModule "$file"); then
+        moduleOf+=("$module")
+        if [ ${#modules[@]} -eq 0 ] || ! contains "$module" "${modules[@]}"; then
+            modules+=("$module")
+        fi
+    else
+        moduleOf+=("")
+        uncoveredFiles+=("$file")
+    fi
+done
+
+if [ ${#uncoveredFiles[@]} -gt 0 ]; then
+    echo "⚠️  Skipping files that no Gradle module owns (Spotless is not applied to them):" >&2
+    for file in "${uncoveredFiles[@]}"; do
+        echo "  - $file" >&2
+    done
+fi
+
+if [ ${#modules[@]} -eq 0 ]; then
+    echo "✅ Nothing to check in Gradle modules, skipping spotless check"
+    exit 0
+fi
+
+echo "Running spotless check for the following modules:"
+for module in "${modules[@]}"; do
+    echo "  - $module"
+done
+
+tasks=()
+for module in "${modules[@]}"; do
+    tasks+=(":${module//\//:}:spotlessCheck")
+done
+
+# Single Gradle run for every touched module. Captured output is reused to
+# diagnose which files actually broke the check.
+output=$(./gradlew --continue --console=plain "${tasks[@]}" 2>&1)
+status=$?
+
+if [ "$status" -eq 0 ]; then
+    echo "✅ spotless check succeeded for all files"
+    exit 0
+fi
+
+# Failed tasks in the FAILURE report. Spotless registers one Gradle task per
+# format step (e.g. ':app:spotlessKotlinCheck'), so a module is considered
+# failed when any of its ':<module>:spotless...' subtasks failed — the filter
+# also covers the aggregate ':<module>:spotlessCheck' lifecycle task, in case
+# Gradle reports it too.
+failedTasks=$(printf '%s\n' "$output" | grep -oE "Execution failed for task '[^']+'" | sed -e "s/Execution failed for task '//" -e "s/'$//" | grep -E '^:.+:spotless')
+
+failedModules=()
+for module in "${modules[@]}"; do
+    if printf '%s\n' "$failedTasks" | grep -qF -- ":${module//\//:}:spotless"; then
+        failedModules+=("$module")
+    fi
+done
+
+if [ ${#failedModules[@]} -eq 0 ]; then
+    echo "❌ Gradle failed but no ':<module>:spotless*' task was reported. Last Gradle output was:" >&2
+    printf '%s\n' "$output" | tail -n 20 | sed 's/^/   /' >&2
+    exit 1
+fi
+
+# Flag every file ready to push that appears in the violations report. Files
+# are matched both against their module-relative path (Spotless lists them
+# that way) and the repo-relative path, to survive report format changes.
+offendingFiles=()   # changed files the report blames
+counts=()           # parallel to failedModules, how many of its changed files were flagged
+for _ in "${failedModules[@]}"; do
+    counts+=(0)
+done
+
+idx=0
+while [ "$idx" -lt "${#changedFiles[@]}" ]; do
+    file="${changedFiles[$idx]}"
+    module="${moduleOf[$idx]}"
+    if [ -n "$module" ] && contains "$module" "${failedModules[@]}"; then
+        relpath="${file#"$module"/}"
+        if printf '%s\n' "$output" | grep -qF -e "$relpath" -e "$file"; then
+            offendingFiles+=("$file")
+            flagIdx=0
+            for module in "${failedModules[@]}"; do
+                if [ "$module" = "${moduleOf[$idx]}" ]; then
+                    counts[$flagIdx]=$(( ${counts[$flagIdx]} + 1 ))
+                    break
+                fi
+                flagIdx=$((flagIdx + 1))
+            done
+        fi
+    fi
+    idx=$((idx + 1))
+done
+
+if [ ${#offendingFiles[@]} -gt 0 ]; then
+    echo "❌ Spotless check failed for the following files:" >&2
+    for file in "${offendingFiles[@]}"; do
+        echo "  - $file" >&2
+    done
+fi
+
+blameIdx=0
+for module in "${failedModules[@]}"; do
+    if [ "${counts[$blameIdx]}" -eq 0 ]; then
+        echo "⚠️  Module $module failed, but none of the files you are pushing seem to be the cause" >&2
+        echo "   (pre-existing violations?). Details: './gradlew :${module//\//:}:spotlessCheck'" >&2
+    fi
+    blameIdx=$((blameIdx + 1))
+done
+
+echo "❌ Push rejected. Run './gradlew spotlessApply', commit the changes and push again." >&2
+exit 1
