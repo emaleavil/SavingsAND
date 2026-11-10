@@ -66,16 +66,15 @@ class HomeViewModel(
         )
     }
 
-    private fun mapToTransactions(transactions: Result<Transactions>): TransactionsUiState =
-        TransactionsUiState(
-            transactions.getOrNull()?.entries?.map { transaction ->
-                TransactionUiModel(
-                    id = transaction.id,
-                    description = transaction.description,
-                    quantity = "${transaction.amount} ${transaction.currency}",
-                    date = transaction.createdAt,
-                    isIncome = transaction.type == TransactionType.INCOME,
-                )
-            } ?: emptyList(),
-        )
+    private fun mapToTransactions(transactions: Result<Transactions>): TransactionsUiState = TransactionsUiState(
+        transactions.getOrNull()?.entries?.map { transaction ->
+            TransactionUiModel(
+                id = transaction.id,
+                description = transaction.description,
+                quantity = "${transaction.amount} ${transaction.currency}",
+                date = transaction.createdAt,
+                isIncome = transaction.type == TransactionType.INCOME,
+            )
+        } ?: emptyList(),
+    )
 }

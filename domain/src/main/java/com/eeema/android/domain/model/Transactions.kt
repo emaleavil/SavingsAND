@@ -22,6 +22,5 @@ data class Transactions(val entries: List<Transaction>) {
     val spentAmount: Float
         get() = max(0f, expenses.getAmount())
 
-    private fun List<Transaction>?.getAmount(): Float =
-        this?.map { it.amount }?.reduce { acc, amount -> acc + amount } ?: 0f
+    private fun List<Transaction>?.getAmount(): Float = this?.map { it.amount }?.reduce { acc, amount -> acc + amount } ?: 0f
 }
